@@ -8,6 +8,6 @@ This project is a project that I did both for improving myself and to help me in
 RTS System Mechanics
 
 
-- [x]RTSSelectAndMove
+- :heavy_check_mark RTSSelectAndMove
 - [ ]RTSResourcesManagement
 - [ ]RTSBuildings
