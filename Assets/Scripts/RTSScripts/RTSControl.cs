@@ -1,17 +1,16 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.AI;
-using UnityEngine.Events;
-
 public class RTSControl : MonoBehaviour,ISelectable
 {
+    #region Params
     public Image image;
     bool isSelected;
     public Camera myCam;
     public LayerMask GroundLayer;
     private NavMeshAgent navmeshAgent;
     public NavMeshAgent NavMeshAgent { get { return (navmeshAgent == null) ? navmeshAgent = GetComponent<NavMeshAgent>() : navmeshAgent; } }
-
+    #endregion
     #region MonoBehaviourFunctions
     private void Awake()
     {
@@ -53,5 +52,4 @@ public class RTSControl : MonoBehaviour,ISelectable
         RTSManager.Instance.AddSelectable(gameObject);
     }
     #endregion
-
 }

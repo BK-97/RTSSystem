@@ -13,7 +13,6 @@ public class RTSDragSelect : MonoBehaviour
     Vector2 endPosition = Vector2.zero;
 
     #endregion
-
     #region MyMethods
     void DrawVisual()
     {
@@ -61,7 +60,6 @@ public class RTSDragSelect : MonoBehaviour
     }
     #endregion
     #region MonoBehaviourFunctions
-
     void Start()
     {
         if (myCam == null)
@@ -93,5 +91,4 @@ public class RTSDragSelect : MonoBehaviour
         }
     }
     #endregion
-
 }
