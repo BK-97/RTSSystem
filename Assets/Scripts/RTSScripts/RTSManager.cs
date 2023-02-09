@@ -4,7 +4,7 @@ public class RTSManager : Singleton<RTSManager>
 {
     #region Params
     public LayerMask rtsCharacterLayer;
-    [HideInInspector]
+    //[HideInInspector]
     public List<GameObject> SelectedCharacters;
     [HideInInspector]
     public List<GameObject> AllSelectableCharacters;
@@ -79,6 +79,21 @@ public class RTSManager : Singleton<RTSManager>
         {
             SelectedCharacters.Remove(selectedObject);
             selectedObject.GetComponent<ISelectable>().Deselected();
+        }
+    }
+    public bool UseFormation;
+    public void MoveAllRTSUnits(Vector3 mousePos)
+    {
+        if (UseFormation)
+        {
+            FormationManager.Instance.CalculateFormationPos(mousePos);
+        }
+        else
+        {
+            for (int i = 0; i < SelectedCharacters.Count; i++)
+            {
+                SelectedCharacters[i].GetComponent<RTSControl>().targetPos = mousePos;
+            }
         }
     }
     #endregion

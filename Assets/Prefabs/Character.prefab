@@ -15,8 +15,8 @@ GameObject:
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_NavMeshLayer: 1
+  m_StaticEditorFlags: 8
   m_IsActive: 1
 --- !u!4 &8245638810663115099
 Transform:
@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 8245638811014649142}
   - component: {fileID: 8245638811014649140}
   - component: {fileID: 8245638811014649291}
+  - component: {fileID: 3126505373147719148}
   m_Layer: 7
   m_Name: Character
   m_TagString: Untagged
@@ -167,6 +168,7 @@ MonoBehaviour:
   GroundLayer:
     serializedVersion: 2
     m_Bits: 64
+  targetPos: {x: 0, y: 0, z: 0}
 --- !u!195 &8245638811014649291
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -188,7 +190,23 @@ NavMeshAgent:
   m_Height: 2
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 4
+  m_ObstacleAvoidanceType: 1
+--- !u!208 &3126505373147719148
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8245638811014649136}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 1, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 0
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 1, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1 &8245638811027511533
 GameObject:
   m_ObjectHideFlags: 0

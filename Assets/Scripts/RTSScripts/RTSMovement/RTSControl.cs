@@ -10,13 +10,14 @@ public class RTSControl : MonoBehaviour,ISelectable
     public LayerMask GroundLayer;
     private NavMeshAgent navmeshAgent;
     public NavMeshAgent NavMeshAgent { get { return (navmeshAgent == null) ? navmeshAgent = GetComponent<NavMeshAgent>() : navmeshAgent; } }
+    public Vector3 targetPos;
     #endregion
     #region MonoBehaviourFunctions
     private void Awake()
     {
         if (myCam == null)
             myCam = Camera.main;
-
+        targetPos = transform.position;
         AddRTSManager();
     }
     void Update()
@@ -25,16 +26,11 @@ public class RTSControl : MonoBehaviour,ISelectable
         {
             return;
         }
-        if (Input.GetMouseButtonDown(1))
-        {
-            RaycastHit hit;
-            Ray ray = myCam.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, GroundLayer))
-            {
-                NavMeshAgent.SetDestination(hit.point);
-            }
-        }
+        Move();
+    }
+    private void Move()
+    {
+        NavMeshAgent.SetDestination(targetPos);
     }
     public void Selected()
     {
@@ -46,6 +42,7 @@ public class RTSControl : MonoBehaviour,ISelectable
     {
         image.enabled = false;
         isSelected = false;
+
     }
     public void AddRTSManager()
     {
