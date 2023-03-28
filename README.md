@@ -14,4 +14,4 @@ RTS System Mechanics
 - RTSBuildings                ❌
 
 
-![](https://github.com/RTSSystem/Recordings/Formations.gif)
+![](https://github.com/BK-97/RTSSystem/blob/main/Recordings/Formations.gif)
