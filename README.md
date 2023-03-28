@@ -9,5 +9,9 @@ RTS System Mechanics
 
 
 - RTSSelectAndMove            ✅
+- RTSFormations               ✅
 - RTSResourcesManagement      ❌
 - RTSBuildings                ❌
+
+
+![](https://github.com/RTSSystem/Recordings/Formations.gif)
