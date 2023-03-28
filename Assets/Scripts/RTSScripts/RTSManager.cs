@@ -87,10 +87,16 @@ public class RTSManager : Singleton<RTSManager>
             selectedObject.GetComponent<ISelectable>().Deselected();
         }
     }
+    private Vector3 lastMousePos;
+    public void ChangeFormation()
+    {
+        MoveAllRTSUnits(lastMousePos);
+    }
     public void MoveAllRTSUnits(Vector3 mousePos)
     {
         if (SelectedCharacters.Count == 0)
             return;
+        lastMousePos = mousePos;
         if (UseFormation && SelectedCharacters.Count>1)
         {
             FormationManager.Instance.CalculateFormationPos(mousePos);

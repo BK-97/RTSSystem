@@ -61,7 +61,7 @@ public class FormationManager : Singleton<FormationManager>
     }
     public void OrganizeCharactersInRows(Vector3 mousePoint)
     {
-        int numRows = Mathf.CeilToInt((float)RTSManager.Instance.SelectedCharacters.Count / 5); //row sayýsýný belirler
+        int numRows = Mathf.CeilToInt((float)RTSManager.Instance.SelectedCharacters.Count / 6); //row sayýsýný belirler
         int numPerRow = Mathf.CeilToInt((float)RTSManager.Instance.SelectedCharacters.Count / numRows); //row baþýna karakter sayýsýný belirler
 
         for (int i = 0; i < RTSManager.Instance.SelectedCharacters.Count; i++)
@@ -82,7 +82,6 @@ public class FormationManager : Singleton<FormationManager>
             int col = i % numRows;
             Vector3 newPos = mousePoint + new Vector3(col * _unitXOffset, 0, row * _unitZOffset);
             newPos.y = 0;
-            Debug.Log(i);
             RTSManager.Instance.SelectedCharacters[i].GetComponent<RTSControl>().targetPos = newPos;
         }
     }
