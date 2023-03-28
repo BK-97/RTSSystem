@@ -5,11 +5,11 @@ public class RTSControl : MonoBehaviour,ISelectable
 {
     #region Params
     public Image image;
-    bool isSelected;
     public Camera myCam;
-    public LayerMask GroundLayer;
     private NavMeshAgent navmeshAgent;
     public NavMeshAgent NavMeshAgent { get { return (navmeshAgent == null) ? navmeshAgent = GetComponent<NavMeshAgent>() : navmeshAgent; } }
+    [SerializeField]
+    bool isSelected;
     public Vector3 targetPos;
     #endregion
     #region MonoBehaviourFunctions
@@ -17,19 +17,12 @@ public class RTSControl : MonoBehaviour,ISelectable
     {
         if (myCam == null)
             myCam = Camera.main;
-        targetPos = transform.position;
+
         AddRTSManager();
     }
-    void Update()
+    public void Move()
     {
-        if (!isSelected)
-        {
-            return;
-        }
-        Move();
-    }
-    private void Move()
-    {
+        Debug.Log("mOVE");
         NavMeshAgent.SetDestination(targetPos);
     }
     public void Selected()

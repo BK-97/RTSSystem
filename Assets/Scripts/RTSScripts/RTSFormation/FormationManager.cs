@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class FormationManager : Singleton<FormationManager>
 {
@@ -12,80 +11,105 @@ public class FormationManager : Singleton<FormationManager>
     #endregion
 
     #region MyMethods
-
     public void CalculateFormationPos(Vector3 mousePoint)
     {
         switch (CurrentFormationType)
         {
             case FormationTypes.Box:
-                BoxFormation(mousePoint);
+                OrganizeCharactersInSquare(mousePoint);
                 break;
             case FormationTypes.Circle:
-                CircleFormation(mousePoint);
+                OrganizeCharactersInCircle(mousePoint);
                 break;
             case FormationTypes.Line:
-                LineFormation(mousePoint);
+                OrganizeCharactersInRows(mousePoint);
                 break;
-            case FormationTypes.V:
-                VFormation(mousePoint);
+            case FormationTypes.Triangle:
+                ArrangeCharactersInTriangleFormation(mousePoint);
                 break;
             default:
                 break;
         }
-
     }
-    private float starterXPos;
-    private float starterZPos;
-    private void BoxFormation(Vector3 mousePoint)
+    #region CalculateFormations
+    public void ArrangeCharactersInTriangleFormation(Vector3 mousePoint)
     {
-        //Debug.Log("mousePoint  " + mousePoint);
-        int rowCount = Mathf.CeilToInt(Mathf.Sqrt(RTSManager.Instance.SelectedCharacters.Count));
-        float offMultiplier = (rowCount / 2) - 0.5f;
-        int currentIndex = 0;
+        int totalCalculated = 0;
+        int rowCount = CalculateM(RTSManager.Instance.SelectedCharacters.Count);
+        float halfDistance = _unitXOffset / 2f;
 
-        for (int i = 0; i < rowCount; i++)
+        RTSManager.Instance.SelectedCharacters.Sort((x, y) => x.transform.position.x.CompareTo(y.transform.position.x));
+
+        int index = 0;
+        for (int row = 0; row < rowCount; row++)
         {
-            for (int j = 0; j < rowCount; j++)
-            {
-                if (i + j == 0)
-                {
-                    RTSManager.Instance.SelectedCharacters[0].GetComponent<RTSControl>().targetPos =
-                        new Vector3(mousePoint.x - (_unitXOffset * offMultiplier), 0, mousePoint.z + (_unitZOffset * offMultiplier));
-                    starterXPos = RTSManager.Instance.SelectedCharacters[0].GetComponent<RTSControl>().targetPos.x;
-                    starterZPos = RTSManager.Instance.SelectedCharacters[0].GetComponent<RTSControl>().targetPos.z;
-                    //Debug.Log(currentIndex + "  " + RTSManager.Instance.SelectedCharacters[currentIndex].GetComponent<RTSControl>().targetPos);
+            int rowSize = rowCount - row;
 
-                }
-                else
-                {
-                    if (RTSManager.Instance.SelectedCharacters.Count <= currentIndex)
-                        return;
-                    //Debug.Log(currentIndex+"  "+ RTSManager.Instance.SelectedCharacters[0].GetComponent<RTSControl>().targetPos.x + "  " + RTSManager.Instance.SelectedCharacters[0].GetComponent<RTSControl>().targetPos.z + "  " + i + 1);
-                    SetRow(currentIndex, i + 1,j);
-                }
-                currentIndex++;
+            for (int i = 0; i < rowSize; i++)
+            {
+                totalCalculated++;
+                if (totalCalculated > RTSManager.Instance.SelectedCharacters.Count)
+                    return;
+
+                float xPos = mousePoint.x + (i - (rowSize - 1) / 2f) * _unitXOffset;
+                float zPos = mousePoint.z + (row * _unitZOffset) - halfDistance;
+                Debug.Log(index);
+                RTSManager.Instance.SelectedCharacters[index].GetComponent<RTSControl>().targetPos = new Vector3(xPos, mousePoint.y, zPos);
+                index++;
             }
         }
-
     }
-    private void SetRow(int currentIndex,int currentRow,int curretnIndexInRow)
+    public void OrganizeCharactersInRows(Vector3 mousePoint)
     {
-        RTSManager.Instance.SelectedCharacters[currentIndex].GetComponent<RTSControl>().targetPos =
-                new Vector3(starterXPos + (curretnIndexInRow * _unitXOffset), 0, starterZPos - ((currentRow-1)*_unitZOffset));
+        int numRows = Mathf.CeilToInt((float)RTSManager.Instance.SelectedCharacters.Count / 5); //row sayýsýný belirler
+        int numPerRow = Mathf.CeilToInt((float)RTSManager.Instance.SelectedCharacters.Count / numRows); //row baþýna karakter sayýsýný belirler
 
-        //Debug.Log(currentIndex + "  " + RTSManager.Instance.SelectedCharacters[currentIndex].GetComponent<RTSControl>().targetPos);
+        for (int i = 0; i < RTSManager.Instance.SelectedCharacters.Count; i++)
+        {
+            int row = i / numPerRow;
+            int col = i % numPerRow;
+            Vector3 newPos = mousePoint + new Vector3(col * _unitXOffset, 0, row * _unitZOffset);
+            RTSManager.Instance.SelectedCharacters[i].GetComponent<RTSControl>().targetPos = newPos;
+        }
+    }
+    public void OrganizeCharactersInSquare(Vector3 mousePoint)
+    {
+        int numRows = Mathf.CeilToInt(Mathf.Sqrt(RTSManager.Instance.SelectedCharacters.Count)); //kare boyutunu belirler
 
+        for (int i = 0; i < RTSManager.Instance.SelectedCharacters.Count; i++)
+        {
+            int row = i / numRows;
+            int col = i % numRows;
+            Vector3 newPos = mousePoint + new Vector3(col * _unitXOffset, 0, row * _unitZOffset);
+            newPos.y = 0;
+            Debug.Log(i);
+            RTSManager.Instance.SelectedCharacters[i].GetComponent<RTSControl>().targetPos = newPos;
+        }
     }
-    private void CircleFormation(Vector3 mousePoint)
+    public void OrganizeCharactersInCircle(Vector3 mousePoint)
     {
+        int numCharacters = RTSManager.Instance.SelectedCharacters.Count;
+        float angleBetweenCharacters = 360f / numCharacters;
 
+        for (int i = 0; i < numCharacters; i++)
+        {
+            float angle = i * angleBetweenCharacters * Mathf.Deg2Rad;
+            float x = Mathf.Cos(angle) * _unitXOffset;
+            float y = Mathf.Sin(angle) * _unitZOffset;
+            Vector3 newPos = mousePoint + new Vector3(x, 0, y);
+            RTSManager.Instance.SelectedCharacters[i].GetComponent<RTSControl>().targetPos = newPos;
+        }
     }
-    private void LineFormation(Vector3 mousePoint)
+    public static int CalculateM(int total)
     {
-    }
-    private void VFormation(Vector3 mousePoint)
-    {
+        int m = 1;
+        while (m * (m + 1) / 2 < total)
+        {
+            m++;
+        }
+        return m;
     }
     #endregion
-
+    #endregion
 }
+
