@@ -4,10 +4,13 @@ public class RTSManager : Singleton<RTSManager>
 {
     #region Params
     public LayerMask rtsCharacterLayer;
+    public LayerMask GroundLayer;
     [HideInInspector]
     public List<GameObject> SelectedCharacters;
     [HideInInspector]
     public List<GameObject> AllSelectableCharacters;
+    public bool UseFormation;
+
     #endregion
     #region MyMethods
     public void AddSelectable(GameObject selectable)
@@ -23,33 +26,37 @@ public class RTSManager : Singleton<RTSManager>
         }
         AllSelectableCharacters.Remove(selectable);
     }
-    private void ListClear()
-    {
-        AllSelectableCharacters.Clear();
-        SelectedCharacters.Clear();
-    }
-    private void CheckClick(Vector3 clickPos)
+    public void CheckLeftClick(Vector3 clickPos)
     {
         RaycastHit hit;
-
         Ray ray = Camera.main.ScreenPointToRay(clickPos);
+
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, rtsCharacterLayer))
         {
-
-            if (hit.collider.gameObject.GetComponent<ISelectable>()==null)
+            if (hit.transform.GetComponent<ISelectable>() == null)
                 return;
+
             if (Input.GetKey(KeyCode.LeftShift))
             {
-                ShiftSelect(hit.collider.gameObject);
+                ShiftSelect(hit.transform.gameObject);
+                return;
             }
-            else
-            {
-                Select(hit.collider.gameObject);
-            }
+            Select(hit.transform.gameObject);
         }
         else
         {
             ClearSelectedList();
+        }
+    }
+
+    public void CheckRightClick(Vector3 clickPos)
+    {
+        RaycastHit hit;
+        Ray ray = Camera.main.ScreenPointToRay(clickPos);
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, GroundLayer))
+        {
+            MoveAllRTSUnits(hit.point);
         }
     }
 
@@ -69,7 +76,6 @@ public class RTSManager : Singleton<RTSManager>
     }
     public void ShiftSelect(GameObject selectedObject)
     {
-
         if (!SelectedCharacters.Contains(selectedObject))
         {
             SelectedCharacters.Add(selectedObject);
@@ -81,12 +87,32 @@ public class RTSManager : Singleton<RTSManager>
             selectedObject.GetComponent<ISelectable>().Deselected();
         }
     }
-    #endregion
-    #region MonoBehaviourFunctions
-    private void Update()
+    private Vector3 lastMousePos;
+    public void ChangeFormation()
     {
-        if (Input.GetMouseButtonDown(0))
-            CheckClick(Input.mousePosition);
+        MoveAllRTSUnits(lastMousePos);
+    }
+    public void MoveAllRTSUnits(Vector3 mousePos)
+    {
+        if (SelectedCharacters.Count == 0)
+            return;
+        lastMousePos = mousePos;
+        if (UseFormation && SelectedCharacters.Count>1)
+        {
+            FormationManager.Instance.CalculateFormationPos(mousePos);
+            for (int i = 0; i < SelectedCharacters.Count; i++)
+            {
+                SelectedCharacters[i].GetComponent<RTSControl>().Move();
+            }
+        }
+        else
+        {
+            for (int i = 0; i < SelectedCharacters.Count; i++)
+            {
+                SelectedCharacters[i].GetComponent<RTSControl>().targetPos = mousePos;
+                SelectedCharacters[i].GetComponent<RTSControl>().Move();
+            }
+        }
     }
     #endregion
 }
