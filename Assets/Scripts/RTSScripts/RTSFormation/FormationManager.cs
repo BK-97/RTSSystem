@@ -6,17 +6,56 @@ public class FormationManager : Singleton<FormationManager>
 {
     #region params
     public FormationTypes CurrentFormationType;
-    [SerializeField] private int _unitXOffset = 5;
-    [SerializeField] private int _unitZOffset = 5;
+    private FormationTypes cachedFormationType;
+    public int _unitXOffset = 5;
+    public int _unitZOffset = 5;
+    #region FormationStates
+    FormationBase currentFormation;
+    public BoxFormation boxFormation = new BoxFormation();
+    public LineFormation lineFormation=new LineFormation();
+    public CircleFormation circleFormation=new CircleFormation();
+    public TriangleFormation triangleFormation=new TriangleFormation();
     #endregion
+    #endregion
+    private void Start()
+    {
+        cachedFormationType = CurrentFormationType;
+        SetFormationType();
+    }
+    private void SetFormationType()
+    {
+        if(cachedFormationType== CurrentFormationType)
+        {
+            currentFormation.CalculateFormation();
+        }
+        else
+        {
+            switch (CurrentFormationType)
+            {
+                case FormationTypes.Box:
+                    currentFormation = boxFormation;
+                    break;
+                case FormationTypes.Circle:
+                    currentFormation = circleFormation;
+                    break;
+                case FormationTypes.Line:
+                    currentFormation = lineFormation;
+                    break;
+                case FormationTypes.Triangle:
+                    currentFormation = triangleFormation;
+                    break;
+            }
+        }
 
+    }
     #region MyMethods
-    public void CalculateFormationPos(Vector3 mousePoint)
+    /*public void CalculateFormationPos(Vector3 mousePoint)
     {
         switch (CurrentFormationType)
         {
             case FormationTypes.Box:
-                OrganizeCharactersInSquare(mousePoint);
+                //OrganizeCharactersInSquare(mousePoint);
+                currentFormation.CalculateFormation(mousePoint);
                 break;
             case FormationTypes.Circle:
                 OrganizeCharactersInCircle(mousePoint);
@@ -53,7 +92,6 @@ public class FormationManager : Singleton<FormationManager>
 
                 float xPos = mousePoint.x + (i - (rowSize - 1) / 2f) * _unitXOffset;
                 float zPos = mousePoint.z + (row * _unitZOffset) - halfDistance;
-                Debug.Log(index);
                 RTSManager.Instance.SelectedCharacters[index].GetComponent<RTSControl>().targetPos = new Vector3(xPos, mousePoint.y, zPos);
                 index++;
             }
@@ -109,6 +147,16 @@ public class FormationManager : Singleton<FormationManager>
         return m;
     }
     #endregion
+    */
     #endregion
+
+    private void Update()
+    {
+        if(cachedFormationType!=CurrentFormationType)
+        {
+            SetFormationType();
+            cachedFormationType = CurrentFormationType;
+        }
+    }
 }
 

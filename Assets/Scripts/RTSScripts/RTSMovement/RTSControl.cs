@@ -22,7 +22,6 @@ public class RTSControl : MonoBehaviour,ISelectable
     }
     public void Move()
     {
-        Debug.Log("mOVE");
         NavMeshAgent.SetDestination(targetPos);
     }
     public void Selected()

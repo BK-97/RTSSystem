@@ -5,7 +5,7 @@ public class RTSManager : Singleton<RTSManager>
     #region Params
     public LayerMask rtsCharacterLayer;
     public LayerMask GroundLayer;
-    [HideInInspector]
+    //[HideInInspector]
     public List<GameObject> SelectedCharacters;
     [HideInInspector]
     public List<GameObject> AllSelectableCharacters;
@@ -19,6 +19,7 @@ public class RTSManager : Singleton<RTSManager>
     }
     public void RemoveSelectable(GameObject selectable)
     {
+        Debug.Log("girme");
         for (int i = 0; i < SelectedCharacters.Count; i++)
         {
             if (SelectedCharacters[i] == selectable)
