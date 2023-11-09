@@ -9,6 +9,6 @@ RTS System Mechanics
 - RTSFormations               ✅
 - RTSResourcesManagement      ❌
 - RTSBuildings                ❌
-
+- RTSCharacterSystem          ❌
 
 ![](https://github.com/BK-97/RTSSystem/blob/main/Recordings/Formations.gif)
