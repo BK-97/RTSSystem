@@ -1,5 +1,5 @@
 using UnityEngine;
-public class InputManager : MonoBehaviour
+public class RTSInputManager : Singleton<RTSInputManager>
 {
     private void Update()
     {
@@ -11,6 +11,10 @@ public class InputManager : MonoBehaviour
         {
             RTSManager.Instance.CheckLeftClick(Input.mousePosition);
         }
+        if (Input.GetKeyDown(KeyCode.LeftShift))
+            RTSManager.Instance.multiSelect = true;
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+            RTSManager.Instance.multiSelect = false;
     }
 
 }

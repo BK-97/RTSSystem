@@ -1,11 +1,9 @@
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.AI;
 public class RTSControl : MonoBehaviour,ISelectable
 {
     #region Params
-    public Image image;
-    public Camera myCam;
+    public GameObject selectCircle;
     private NavMeshAgent navmeshAgent;
     public NavMeshAgent NavMeshAgent { get { return (navmeshAgent == null) ? navmeshAgent = GetComponent<NavMeshAgent>() : navmeshAgent; } }
     [SerializeField]
@@ -15,9 +13,6 @@ public class RTSControl : MonoBehaviour,ISelectable
     #region MonoBehaviourFunctions
     private void Awake()
     {
-        if (myCam == null)
-            myCam = Camera.main;
-
         AddRTSManager();
     }
     public void Move()
@@ -26,15 +21,14 @@ public class RTSControl : MonoBehaviour,ISelectable
     }
     public void Selected()
     {
-        image.enabled = true;
+        selectCircle.SetActive(true);
         isSelected = true;
     }
 
     public void Deselected()
     {
-        image.enabled = false;
+        selectCircle.SetActive(false);
         isSelected = false;
-
     }
     public void AddRTSManager()
     {

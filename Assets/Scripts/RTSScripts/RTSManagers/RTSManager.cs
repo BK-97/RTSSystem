@@ -3,14 +3,19 @@ using UnityEngine;
 public class RTSManager : Singleton<RTSManager>
 {
     #region Params
-    public LayerMask rtsCharacterLayer;
-    public LayerMask GroundLayer;
-    //[HideInInspector]
+    [SerializeField]
+    private LayerMask rtsCharacterLayer;
+    [SerializeField]
+    private LayerMask GroundLayer;
+    [SerializeField]
+    private bool UseFormation;
+
+    [HideInInspector]
     public List<GameObject> SelectedCharacters;
     [HideInInspector]
     public List<GameObject> AllSelectableCharacters;
-    public bool UseFormation;
-
+    [HideInInspector]
+    public bool multiSelect;
     #endregion
     #region MyMethods
     public void AddSelectable(GameObject selectable)
@@ -19,7 +24,6 @@ public class RTSManager : Singleton<RTSManager>
     }
     public void RemoveSelectable(GameObject selectable)
     {
-        Debug.Log("girme");
         for (int i = 0; i < SelectedCharacters.Count; i++)
         {
             if (SelectedCharacters[i] == selectable)
@@ -29,15 +33,14 @@ public class RTSManager : Singleton<RTSManager>
     }
     public void CheckLeftClick(Vector3 clickPos)
     {
-        RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(clickPos);
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, rtsCharacterLayer))
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 100,rtsCharacterLayer))
         {
             if (hit.transform.GetComponent<ISelectable>() == null)
                 return;
 
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (multiSelect)
             {
                 ShiftSelect(hit.transform.gameObject);
                 return;
@@ -93,25 +96,27 @@ public class RTSManager : Singleton<RTSManager>
     {
         MoveAllRTSUnits(lastMousePos);
     }
-    public void MoveAllRTSUnits(Vector3 mousePos)
+    private void MoveAllRTSUnits(Vector3 mousePos)
     {
         if (SelectedCharacters.Count == 0)
             return;
+
         lastMousePos = mousePos;
-        if (UseFormation && SelectedCharacters.Count>1)
+
+        if (UseFormation && SelectedCharacters.Count > 1)
         {
             FormationManager.Instance.CalculateFormationPos(mousePos);
-            for (int i = 0; i < SelectedCharacters.Count; i++)
+            foreach (var selectedCharacter in SelectedCharacters)
             {
-                SelectedCharacters[i].GetComponent<RTSControl>().Move();
+                selectedCharacter.GetComponent<RTSControl>().Move();
             }
         }
         else
         {
-            for (int i = 0; i < SelectedCharacters.Count; i++)
+            foreach (var selectedCharacter in SelectedCharacters)
             {
-                SelectedCharacters[i].GetComponent<RTSControl>().targetPos = mousePos;
-                SelectedCharacters[i].GetComponent<RTSControl>().Move();
+                selectedCharacter.GetComponent<RTSControl>().targetPos = mousePos;
+                selectedCharacter.GetComponent<RTSControl>().Move();
             }
         }
     }

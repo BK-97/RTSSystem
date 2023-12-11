@@ -22,7 +22,6 @@ public class TriangleFormation : FormationBase
 
                 float xPos = mousePos.x + (i - (rowSize - 1) / 2f) * FormationManager.Instance._unitXOffset;
                 float zPos = mousePos.z + (row * FormationManager.Instance._unitZOffset) - halfDistance;
-                Debug.Log(index);
                 RTSManager.Instance.SelectedCharacters[index].GetComponent<RTSControl>().targetPos = new Vector3(xPos, mousePos.y, zPos);
                 index++;
             }

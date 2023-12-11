@@ -58,6 +58,8 @@ public class RTSDragSelect : MonoBehaviour
             }
         }
     }
+
+
     #endregion
     #region MonoBehaviourFunctions
     void Start()
