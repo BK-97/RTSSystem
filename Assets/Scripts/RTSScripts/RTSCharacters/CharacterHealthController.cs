@@ -7,7 +7,6 @@ public class CharacterHealthController : MonoBehaviour,IDamagable
     [SerializeField]
     private Healthbar healthBar;
     private float currentHealth;
-
     public void SetHealth(float initHealth)
     {
         currentHealth = initHealth;

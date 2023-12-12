@@ -2,10 +2,11 @@ using UnityEngine;
 using UnityEngine.AI;
 public class RTSControl : MonoBehaviour,ISelectable
 {
+    public enum RTSActions { Move,Attack,Gather}
+    private RTSActions currentCommand;
     #region Params
     public GameObject selectCircle;
-    private NavMeshAgent navmeshAgent;
-    public NavMeshAgent NavMeshAgent { get { return (navmeshAgent == null) ? navmeshAgent = GetComponent<NavMeshAgent>() : navmeshAgent; } }
+    private CharacterStateMachine stateController;
     [SerializeField]
     bool isSelected;
     public Vector3 targetPos;
@@ -14,10 +15,23 @@ public class RTSControl : MonoBehaviour,ISelectable
     private void Awake()
     {
         AddRTSManager();
+        stateController = GetComponent<CharacterStateMachine>();
     }
-    public void Move()
+    public void HandleCommand(RTSActions newCommand)
     {
-        NavMeshAgent.SetDestination(targetPos);
+        switch (newCommand)
+        {
+            case RTSActions.Move:
+                stateController.clickedTargetPos= targetPos;
+                stateController.SwitchState(stateController.moveState);
+                break;
+            case RTSActions.Attack:
+                break;
+            case RTSActions.Gather:
+                break;
+            default:
+                break;
+        }
     }
     public void Selected()
     {

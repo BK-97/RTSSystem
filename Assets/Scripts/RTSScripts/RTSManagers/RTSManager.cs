@@ -108,7 +108,7 @@ public class RTSManager : Singleton<RTSManager>
             FormationManager.Instance.CalculateFormationPos(mousePos);
             foreach (var selectedCharacter in SelectedCharacters)
             {
-                selectedCharacter.GetComponent<RTSControl>().Move();
+                selectedCharacter.GetComponent<RTSControl>().HandleCommand(RTSControl.RTSActions.Move);
             }
         }
         else
@@ -116,7 +116,7 @@ public class RTSManager : Singleton<RTSManager>
             foreach (var selectedCharacter in SelectedCharacters)
             {
                 selectedCharacter.GetComponent<RTSControl>().targetPos = mousePos;
-                selectedCharacter.GetComponent<RTSControl>().Move();
+                selectedCharacter.GetComponent<RTSControl>().HandleCommand(RTSControl.RTSActions.Move);
             }
         }
     }

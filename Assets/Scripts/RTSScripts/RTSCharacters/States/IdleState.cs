@@ -2,16 +2,16 @@ public class IdleState : BaseState
 {
     public override void EnterState(CharacterStateMachine stateController)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public override void ExitState(CharacterStateMachine stateController, BaseState nextState)
     {
-        throw new System.NotImplementedException();
+        stateController.SwitchState(nextState);
     }
 
     public override void UpdateState(CharacterStateMachine stateController)
     {
-        throw new System.NotImplementedException();
+
     }
 }

@@ -1,17 +1,20 @@
+using UnityEngine;
 public class MoveState : BaseState
 {
     public override void EnterState(CharacterStateMachine stateController)
     {
-        throw new System.NotImplementedException();
+        stateController.moveController.MoveTarget(stateController.clickedTargetPos);
     }
 
     public override void ExitState(CharacterStateMachine stateController, BaseState nextState)
     {
-        throw new System.NotImplementedException();
+        stateController.SwitchState(nextState);
     }
 
     public override void UpdateState(CharacterStateMachine stateController)
     {
-        throw new System.NotImplementedException();
+        if (stateController.moveController.IsDestinationReached())
+            ExitState(stateController, stateController.idleState);
+        stateController.moveController.MoveTarget(stateController.clickedTargetPos);
     }
 }

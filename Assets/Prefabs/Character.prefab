@@ -590,6 +590,7 @@ GameObject:
   - component: {fileID: 5767922038015149927}
   - component: {fileID: 2014800461901020922}
   - component: {fileID: 4573167212171431609}
+  - component: {fileID: 1686930922504618406}
   m_Layer: 7
   m_Name: Character
   m_TagString: Untagged
@@ -721,3 +722,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CharacterData: {fileID: 11400000, guid: 139671e1d2ccbdb48930bb12044d078f, type: 2}
   healthController: {fileID: 5767922038015149927}
+  moveController: {fileID: 1686930922504618406}
+  canStateWork: 0
+  clickedTargetPos: {x: 0, y: 0, z: 0}
+--- !u!114 &1686930922504618406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8245638811014649136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54577bb50713db547b25559ab123e5c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canMove: 0
