@@ -11,7 +11,7 @@ public class LineFormation : FormationBase
             int row = i / numPerRow;
             int col = i % numPerRow;
             Vector3 newPos = mousePos + new Vector3(col * FormationManager.Instance._unitXOffset, 0, row * FormationManager.Instance._unitZOffset);
-            RTSManager.Instance.SelectedCharacters[i].GetComponent<RTSControl>().targetPos = newPos;
+            RTSManager.Instance.SelectedCharacters[i].GetComponent<RTSUnit>().targetPos = newPos;
         }
     }
 }

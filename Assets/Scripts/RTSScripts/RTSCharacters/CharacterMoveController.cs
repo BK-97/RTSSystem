@@ -8,18 +8,18 @@ public class CharacterMoveController : MonoBehaviour
     private NavMeshAgent navmeshAgent;
     public NavMeshAgent NavMeshAgent { get { return (navmeshAgent == null) ? navmeshAgent = GetComponent<NavMeshAgent>() : navmeshAgent; } }
     public bool canMove;
-    private Vector3 targetPoint;
+    public Vector3 targetPoint;
     public void Initalize(float maxSpeed)
     {
         NavMeshAgent.speed = maxSpeed;
         NavMeshAgent.stoppingDistance = 0.1f;
         canMove = true;
     }
-    public void MoveTarget(Vector3 targetPos)
+    public void MoveTarget()
     {
         if (!canMove)
             return;
-        NavMeshAgent.SetDestination(targetPos);
+        NavMeshAgent.SetDestination(targetPoint);
     }
     public bool IsDestinationReached()
     {

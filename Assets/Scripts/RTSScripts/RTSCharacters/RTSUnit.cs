@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
-public class RTSControl : MonoBehaviour,ISelectable
+public class RTSUnit : MonoBehaviour, ISelectable
 {
-    public enum RTSActions { Move,Attack,Gather}
     private RTSActions currentCommand;
     #region Params
     public GameObject selectCircle;
@@ -10,22 +9,29 @@ public class RTSControl : MonoBehaviour,ISelectable
     [SerializeField]
     bool isSelected;
     public Vector3 targetPos;
+    public GameObject targetEnemy;
     #endregion
-    #region MonoBehaviourFunctions
+    #region Methods
     private void Awake()
     {
-        AddRTSManager();
         stateController = GetComponent<CharacterStateMachine>();
+        Initialize();
+    }
+    public void Initialize()
+    {
+        RTSManager.Instance.AddSelectable(gameObject);
     }
     public void HandleCommand(RTSActions newCommand)
     {
         switch (newCommand)
         {
             case RTSActions.Move:
-                stateController.clickedTargetPos= targetPos;
+                stateController.moveController.targetPoint = targetPos;
                 stateController.SwitchState(stateController.moveState);
                 break;
             case RTSActions.Attack:
+                stateController.attackController.enemyTarget = targetEnemy;
+                stateController.SwitchState(stateController.attackState);
                 break;
             case RTSActions.Gather:
                 break;
@@ -43,10 +49,6 @@ public class RTSControl : MonoBehaviour,ISelectable
     {
         selectCircle.SetActive(false);
         isSelected = false;
-    }
-    public void AddRTSManager()
-    {
-        RTSManager.Instance.AddSelectable(gameObject);
     }
     #endregion
 }

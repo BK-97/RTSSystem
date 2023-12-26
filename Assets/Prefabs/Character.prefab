@@ -586,11 +586,12 @@ GameObject:
   - component: {fileID: 8245638811014649141}
   - component: {fileID: 8245638811014649142}
   - component: {fileID: 8245638811014649291}
-  - component: {fileID: 8245638811014649140}
   - component: {fileID: 5767922038015149927}
   - component: {fileID: 2014800461901020922}
   - component: {fileID: 4573167212171431609}
   - component: {fileID: 1686930922504618406}
+  - component: {fileID: 3209547731488322081}
+  - component: {fileID: 8051555023521134198}
   m_Layer: 7
   m_Name: Character
   m_TagString: Untagged
@@ -668,21 +669,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &8245638811014649140
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8245638811014649136}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f22abcce7bb12647bd003458625fb26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectCircle: {fileID: 3930682925948485807}
-  isSelected: 0
-  targetPos: {x: 0, y: 0, z: 0}
 --- !u!114 &5767922038015149927
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -708,6 +694,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c7e6674700a7994d98a5e6e57821d9a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canAttack: 0
+  enemyTarget: {fileID: 0}
 --- !u!114 &4573167212171431609
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -723,8 +711,8 @@ MonoBehaviour:
   CharacterData: {fileID: 11400000, guid: 139671e1d2ccbdb48930bb12044d078f, type: 2}
   healthController: {fileID: 5767922038015149927}
   moveController: {fileID: 1686930922504618406}
+  attackController: {fileID: 0}
   canStateWork: 0
-  clickedTargetPos: {x: 0, y: 0, z: 0}
 --- !u!114 &1686930922504618406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -738,3 +726,34 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canMove: 0
+  targetPoint: {x: 0, y: 0, z: 0}
+--- !u!114 &3209547731488322081
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8245638811014649136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c7e6674700a7994d98a5e6e57821d9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canAttack: 0
+  enemyTarget: {fileID: 0}
+--- !u!114 &8051555023521134198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8245638811014649136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 320122f7416a8984e80cdd6b55ab0a61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectCircle: {fileID: 3930682925948485807}
+  isSelected: 0
+  targetPos: {x: 0, y: 0, z: 0}
+  targetEnemy: {fileID: 0}

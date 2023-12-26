@@ -12,6 +12,7 @@ public class IdleState : BaseState
 
     public override void UpdateState(CharacterStateMachine stateController)
     {
-
+        if (stateController.attackController.IsEnemyTargetInRange())
+            ExitState(stateController, stateController.moveState);
     }
 }

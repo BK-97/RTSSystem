@@ -3,10 +3,7 @@ using UnityEngine;
 public class RTSManager : Singleton<RTSManager>
 {
     #region Params
-    [SerializeField]
-    private LayerMask rtsCharacterLayer;
-    [SerializeField]
-    private LayerMask GroundLayer;
+
     [SerializeField]
     private bool UseFormation;
 
@@ -31,40 +28,8 @@ public class RTSManager : Singleton<RTSManager>
         }
         AllSelectableCharacters.Remove(selectable);
     }
-    public void CheckLeftClick(Vector3 clickPos)
-    {
-        Ray ray = Camera.main.ScreenPointToRay(clickPos);
-        RaycastHit hit;
-        if (Physics.Raycast(ray, out hit, 100,rtsCharacterLayer))
-        {
-            if (hit.transform.GetComponent<ISelectable>() == null)
-                return;
-
-            if (multiSelect)
-            {
-                ShiftSelect(hit.transform.gameObject);
-                return;
-            }
-            Select(hit.transform.gameObject);
-        }
-        else
-        {
-            ClearSelectedList();
-        }
-    }
-
-    public void CheckRightClick(Vector3 clickPos)
-    {
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(clickPos);
-
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, GroundLayer))
-        {
-            MoveAllRTSUnits(hit.point);
-        }
-    }
-
-    private void ClearSelectedList()
+    
+    public void ClearSelectedList()
     {
         for (int i = 0; i < SelectedCharacters.Count; i++)
         {
@@ -72,31 +37,13 @@ public class RTSManager : Singleton<RTSManager>
         }
         SelectedCharacters.Clear();
     }
-    private void Select(GameObject selectedObject)
-    {
-        ClearSelectedList();
-        SelectedCharacters.Add(selectedObject);
-        selectedObject.GetComponent<ISelectable>().Selected();
-    }
-    public void ShiftSelect(GameObject selectedObject)
-    {
-        if (!SelectedCharacters.Contains(selectedObject))
-        {
-            SelectedCharacters.Add(selectedObject);
-            selectedObject.GetComponent<ISelectable>().Selected();
-        }
-        else
-        {
-            SelectedCharacters.Remove(selectedObject);
-            selectedObject.GetComponent<ISelectable>().Deselected();
-        }
-    }
+  
     private Vector3 lastMousePos;
     public void ChangeFormation()
     {
         MoveAllRTSUnits(lastMousePos);
     }
-    private void MoveAllRTSUnits(Vector3 mousePos)
+    public void MoveAllRTSUnits(Vector3 mousePos)
     {
         if (SelectedCharacters.Count == 0)
             return;
@@ -108,15 +55,29 @@ public class RTSManager : Singleton<RTSManager>
             FormationManager.Instance.CalculateFormationPos(mousePos);
             foreach (var selectedCharacter in SelectedCharacters)
             {
-                selectedCharacter.GetComponent<RTSControl>().HandleCommand(RTSControl.RTSActions.Move);
+                selectedCharacter.GetComponent<RTSUnit>().HandleCommand(RTSActions.Move);
             }
         }
         else
         {
             foreach (var selectedCharacter in SelectedCharacters)
             {
-                selectedCharacter.GetComponent<RTSControl>().targetPos = mousePos;
-                selectedCharacter.GetComponent<RTSControl>().HandleCommand(RTSControl.RTSActions.Move);
+                selectedCharacter.GetComponent<RTSUnit>().targetPos = mousePos;
+                selectedCharacter.GetComponent<RTSUnit>().HandleCommand(RTSActions.Move);
+            }
+        }
+    }
+    public void AttackAllRTSUnits(GameObject damagable)
+    {
+        if (SelectedCharacters.Count == 0)
+            return;
+
+        if (UseFormation && SelectedCharacters.Count > 1)
+        {
+            foreach (var selectedCharacter in SelectedCharacters)
+            {
+                selectedCharacter.GetComponent<RTSUnit>().targetEnemy = damagable;
+                selectedCharacter.GetComponent<RTSUnit>().HandleCommand(RTSActions.Attack);
             }
         }
     }

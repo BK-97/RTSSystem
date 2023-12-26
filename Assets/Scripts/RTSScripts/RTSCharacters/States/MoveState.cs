@@ -3,7 +3,7 @@ public class MoveState : BaseState
 {
     public override void EnterState(CharacterStateMachine stateController)
     {
-        stateController.moveController.MoveTarget(stateController.clickedTargetPos);
+        stateController.moveController.MoveTarget();
     }
 
     public override void ExitState(CharacterStateMachine stateController, BaseState nextState)
@@ -15,6 +15,9 @@ public class MoveState : BaseState
     {
         if (stateController.moveController.IsDestinationReached())
             ExitState(stateController, stateController.idleState);
-        stateController.moveController.MoveTarget(stateController.clickedTargetPos);
+        if (stateController.attackController.IsEnemyTargetInRange())
+            ExitState(stateController, stateController.attackState);
+
+        stateController.moveController.MoveTarget();
     }
 }

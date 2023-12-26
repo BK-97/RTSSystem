@@ -54,12 +54,10 @@ public class RTSDragSelect : MonoBehaviour
         {
             if (selectionBox.Contains(myCam.WorldToScreenPoint(unit.transform.position)))
             {
-                RTSManager.Instance.ShiftSelect(unit);
+                RTSSelector.Instance.ShiftSelect(unit);
             }
         }
     }
-
-
     #endregion
     #region MonoBehaviourFunctions
     void Start()

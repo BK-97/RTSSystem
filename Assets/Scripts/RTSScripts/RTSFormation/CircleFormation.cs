@@ -12,7 +12,7 @@ public class CircleFormation : FormationBase
             float x = Mathf.Cos(angle) * FormationManager.Instance._unitXOffset;
             float y = Mathf.Sin(angle) * FormationManager.Instance._unitZOffset;
             Vector3 newPos = mousePos + new Vector3(x, 0, y);
-            RTSManager.Instance.SelectedCharacters[i].GetComponent<RTSControl>().targetPos = newPos;
+            RTSManager.Instance.SelectedCharacters[i].GetComponent<RTSUnit>().targetPos = newPos;
         }
     }
 }

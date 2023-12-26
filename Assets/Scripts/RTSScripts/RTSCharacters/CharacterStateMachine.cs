@@ -10,8 +10,9 @@ public class CharacterStateMachine : MonoBehaviour
     public CharacterHealthController healthController;
     [HideInInspector]
     public CharacterMoveController moveController;
+    [HideInInspector]
+    public CharacterAttackController attackController;
     public bool canStateWork;
-    public Vector3 clickedTargetPos;
     #region StateParams
     public BaseState currentState = null;
     public IdleState idleState = new IdleState();
@@ -23,6 +24,7 @@ public class CharacterStateMachine : MonoBehaviour
     {
         healthController = GetComponent<CharacterHealthController>();
         moveController = GetComponent<CharacterMoveController>();
+        attackController = GetComponent<CharacterAttackController>();
         Initalize();
     }
     void Initalize()

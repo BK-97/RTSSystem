@@ -11,7 +11,7 @@ public class BoxFormation : FormationBase
             int col = i % numRows;
             Vector3 newPos = mousePos + new Vector3(col * FormationManager.Instance._unitXOffset, 0, row * FormationManager.Instance._unitZOffset);
             newPos.y = 0;
-            RTSManager.Instance.SelectedCharacters[i].GetComponent<RTSControl>().targetPos = newPos;
+            RTSManager.Instance.SelectedCharacters[i].GetComponent<RTSUnit>().targetPos = newPos;
         }
     }
 }
